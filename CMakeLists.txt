@@ -4,6 +4,9 @@ project(Cube)
 set(exec Cube)
 set(src
 	src/main.cpp
+	src/helpers.cpp
+	src/cube.cpp
+	src/standard_pieces.cpp
 )
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 set(CMAKE_CXX_STANDARD 20)
