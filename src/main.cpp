@@ -3,8 +3,18 @@
 
 
 int main() {
-    InitWindow(1024, 768, "cuber");
-    //SetTargetFPS(60);
+    const int screenWidth = 1280;
+    const int screenHeight = 960;
+
+    InitWindow(screenWidth, screenHeight, "Cuber");
+
+    int screenWidthActual = GetScreenWidth();
+    int screenHeightActual = GetScreenHeight();
+
+    int posX = (screenWidthActual - screenWidth) / 2;
+    int posY = (screenHeightActual - screenHeight) / 2;
+
+    SetWindowPosition(posX, posY);
 
     Camera3D camera = {0};
     camera.position = { 0.0f, 4.0f, 4.0f };

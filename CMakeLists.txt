@@ -6,6 +6,11 @@ set(src
 	src/main.cpp
 	src/helpers.cpp
 	src/cube.cpp
+	src/cube_renderer.cpp
+	src/cube_updater.cpp
+	src/cube_misc.cpp
+	src/cube_moves.cpp
+	src/cube_scrambler.cpp
 	src/standard_pieces.cpp
 )
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)

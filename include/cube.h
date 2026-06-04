@@ -18,6 +18,7 @@ class Cube {
 private:
 	uint64_t lastSecond = 0.0f;
 	Vector3 rotations = {0.0f, 0.0f, 0.0f};
+	std::vector<Move> moves;
 	std::vector<Edge> edgePieces = standardEdgePieces;
 	std::vector<Corner> cornerPieces = standardCornerPieces;
 	std::vector<Center> centerPieces = standardCenterPieces;
@@ -30,8 +31,12 @@ public:
 	void Update();
 	bool IsSolved();
 private:
+	void _generate_scramble(int length=25);
+	void _render_scene();
+
 	bool _handle_key_input();
 	void _update_data();
+	void _apply_move(const Move& move);
 
 	void _render_edge(Edge& edge);
 	void _render_corner(Corner& corner);
