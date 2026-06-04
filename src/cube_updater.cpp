@@ -94,6 +94,13 @@ bool Cube::_handle_key_input() {
 	}
 
 	if(IsKeyPressed(KEY_SPACE)) {
+		if(!IsSolved())
+			return true;
+
+		edgePieces = standardEdgePieces;
+		cornerPieces = standardCornerPieces;
+		centerPieces = standardCenterPieces;
+
 		_generate_scramble();
 
 		for (const Move& move : moves) {

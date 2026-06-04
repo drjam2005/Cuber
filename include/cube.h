@@ -18,6 +18,7 @@ class Cube {
 private:
 	uint64_t lastSecond = 0.0f;
 	Vector3 rotations = {0.0f, 0.0f, 0.0f};
+	Camera3D camera;
 	std::vector<Move> moves;
 	std::vector<Edge> edgePieces = standardEdgePieces;
 	std::vector<Corner> cornerPieces = standardCornerPieces;
@@ -28,6 +29,7 @@ private:
 	std::unordered_map<Vector3, std::set<Center*>, Vector3Hash, Vector3Equal> cubeCenterSides;
 	bool closeRequested = false;
 public:
+	Cube();
 	void Render();
 	void Update();
 	bool IsEnded();

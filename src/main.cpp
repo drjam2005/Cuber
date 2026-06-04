@@ -11,20 +11,16 @@ int main() {
     InitWindow(screenWidth, screenHeight, "Cuber");
 	SetExitKey(KEY_NULL);
 
-    int screenWidthActual = GetScreenWidth();
-    int screenHeightActual = GetScreenHeight();
+	int monitor = GetCurrentMonitor();
+
+    int screenWidthActual = GetMonitorWidth(monitor);
+    int screenHeightActual = GetMonitorHeight(monitor);
 
     int posX = (screenWidthActual - screenWidth) / 2;
     int posY = (screenHeightActual - screenHeight) / 2;
 
     SetWindowPosition(posX, posY);
 
-    Camera3D camera = {0};
-    camera.position = { 0.0f, 4.0f, 4.0f };
-    camera.target   = { 0.0f, 0.0f, 0.0f };
-    camera.up       = { 0.0f, 1.0f, 0.0f };
-    camera.fovy     = 70.0f;
-    camera.projection = CAMERA_PERSPECTIVE;
 
     float rotation = 10.0f;
 	rlDisableBackfaceCulling();
@@ -36,14 +32,11 @@ int main() {
     while (!WindowShouldClose() && !cube.IsEnded()) {
         BeginDrawing();
         ClearBackground(LIGHTGRAY);
-			BeginMode3D(camera);
 
 				cube.Update();
 				cube.Render();
 
 				DrawGrid(10, 1.0f);
-			EndMode3D();
-
 
 		DrawFPS(20, 20);
         EndDrawing();
