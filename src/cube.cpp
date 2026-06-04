@@ -13,3 +13,7 @@ void Cube::Update() {
 		if(IsSolved()) std::cout << "Solved!" << '\n';
 
 }
+
+bool Cube::IsEnded() {
+	return closeRequested;
+}

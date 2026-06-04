@@ -3,10 +3,13 @@
 
 
 int main() {
-    const int screenWidth = 1280;
-    const int screenHeight = 960;
+    const int screenWidth = 800;
+    const int screenHeight = 600;
 
+
+	SetTraceLogLevel(LOG_NONE);
     InitWindow(screenWidth, screenHeight, "Cuber");
+	SetExitKey(KEY_NULL);
 
     int screenWidthActual = GetScreenWidth();
     int screenHeightActual = GetScreenHeight();
@@ -30,12 +33,14 @@ int main() {
 	Vector3 rotations = {0.0f, 0.0f, 0.0f};
 
 	Cube cube;
-    while (!WindowShouldClose()) {
+    while (!WindowShouldClose() && !cube.IsEnded()) {
         BeginDrawing();
         ClearBackground(LIGHTGRAY);
 			BeginMode3D(camera);
+
 				cube.Update();
 				cube.Render();
+
 				DrawGrid(10, 1.0f);
 			EndMode3D();
 

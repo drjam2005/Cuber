@@ -26,9 +26,11 @@ private:
 	std::unordered_map<Vector3, std::set<Edge*>, Vector3Hash, Vector3Equal> cubeEdgeSides;
 	std::unordered_map<Vector3, std::set<Corner*>, Vector3Hash, Vector3Equal> cubeCornerSides;
 	std::unordered_map<Vector3, std::set<Center*>, Vector3Hash, Vector3Equal> cubeCenterSides;
+	bool closeRequested = false;
 public:
 	void Render();
 	void Update();
+	bool IsEnded();
 	bool IsSolved();
 private:
 	void _generate_scramble(int length=25);

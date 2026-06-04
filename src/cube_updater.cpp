@@ -1,6 +1,7 @@
 #include "cube.h"
 #include "defines.h"
 #include "helpers.h"
+#include "raylib.h"
 #include "raymath.h"
 
 void Cube::_update_data(){
@@ -79,6 +80,18 @@ void Cube::_apply_move(const Move& move) {
 
 bool Cube::_handle_key_input() {
 	moves.clear();
+	if(IsKeyPressed(KEY_Q)){
+		if(IsKeyDown(KEY_LEFT_CONTROL)) {
+			closeRequested = true;
+			return false;
+		}
+	}
+
+	if(IsKeyPressed(KEY_ESCAPE)){
+		edgePieces = standardEdgePieces;
+		cornerPieces = standardCornerPieces;
+		centerPieces = standardCenterPieces;
+	}
 
 	if(IsKeyPressed(KEY_SPACE)) {
 		_generate_scramble();
