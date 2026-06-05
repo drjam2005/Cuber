@@ -5,7 +5,7 @@ Cube::Cube() {
     camera.position = { 0.0f, 4.0f, 4.0f };
     camera.target   = { 0.0f, 0.0f, 0.0f };
     camera.up       = { 0.0f, 1.0f, 0.0f };
-    camera.fovy     = 70.0f;
+    camera.fovy     = 65.0f;
     camera.projection = CAMERA_PERSPECTIVE;
 }
 
