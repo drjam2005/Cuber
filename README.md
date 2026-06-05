@@ -8,6 +8,12 @@ quick little project so i could play the cstimer.net virtual cube offline lol
 
 
 ## Building and Running
+> [!WARNING]
+> Dependencies (for Building):
+>- CMake
+>- C++ Compiler (ideally gcc)
+>- MinGW compiler (Windows)
+
 -- Unix Systems:
 ```bash
 	$ mkdir build
