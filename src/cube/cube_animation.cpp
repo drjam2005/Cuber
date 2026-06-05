@@ -1,38 +1,27 @@
 #include "cube.h"
 #include "raylib.h"
-#include <algorithm>
-
-namespace {
-template <typename Piece>
-bool HasOverlap(const std::set<Piece*>& pieces, const std::set<Piece*>& hiddenPieces) {
-	for (Piece* piece : pieces) {
-		if (hiddenPieces.find(piece) != hiddenPieces.end())
-			return true;
-	}
-
-	return false;
-}
-
-template <typename Piece>
-void CopyPieces(const std::set<Piece*>& pieces, std::vector<Piece>& destination) {
-	for (Piece* piece : pieces)
-		destination.push_back(*piece);
-}
-}
 
 void Cube::_start_move_animation(const Move& move, const std::set<Edge*>& edges, const std::set<Corner*>& corners, const std::set<Center*>& centers) {
-	moveAnimations.erase(
-		std::remove_if(
-			moveAnimations.begin(),
-			moveAnimations.end(),
-			[&](const MoveAnimation& animation) {
-				return HasOverlap(edges, animation.hiddenEdges)
-					|| HasOverlap(corners, animation.hiddenCorners)
-					|| HasOverlap(centers, animation.hiddenCenters);
-			}
-		),
-		moveAnimations.end()
-	);
+	std::vector<MoveAnimation> activeAnimations;
+	activeAnimations.reserve(moveAnimations.size());
+
+	for (const MoveAnimation& animation : moveAnimations) {
+		bool overlapsMove = false;
+
+		for (Edge* edge : edges)
+			overlapsMove = overlapsMove || animation.hiddenEdges.contains(edge);
+
+		for (Corner* corner : corners)
+			overlapsMove = overlapsMove || animation.hiddenCorners.contains(corner);
+
+		for (Center* center : centers)
+			overlapsMove = overlapsMove || animation.hiddenCenters.contains(center);
+
+		if (!overlapsMove)
+			activeAnimations.push_back(animation);
+	}
+
+	moveAnimations = activeAnimations;
 
 	MoveAnimation animation;
 	animation.move = move;
@@ -40,9 +29,14 @@ void Cube::_start_move_animation(const Move& move, const std::set<Edge*>& edges,
 	animation.hiddenCorners = corners;
 	animation.hiddenCenters = centers;
 
-	CopyPieces(edges, animation.edges);
-	CopyPieces(corners, animation.corners);
-	CopyPieces(centers, animation.centers);
+	for (Edge* edge : edges)
+		animation.edges.push_back(*edge);
+
+	for (Corner* corner : corners)
+		animation.corners.push_back(*corner);
+
+	for (Center* center : centers)
+		animation.centers.push_back(*center);
 
 	moveAnimations.push_back(animation);
 }
@@ -53,21 +47,20 @@ void Cube::_update_animations() {
 	for (MoveAnimation& animation : moveAnimations)
 		animation.elapsed += deltaTime;
 
-	moveAnimations.erase(
-		std::remove_if(
-			moveAnimations.begin(),
-			moveAnimations.end(),
-			[](const MoveAnimation& animation) {
-				return animation.elapsed >= animation.duration;
-			}
-		),
-		moveAnimations.end()
-	);
+	std::vector<MoveAnimation> activeAnimations;
+	activeAnimations.reserve(moveAnimations.size());
+
+	for (const MoveAnimation& animation : moveAnimations) {
+		if (animation.elapsed < animation.duration)
+			activeAnimations.push_back(animation);
+	}
+
+	moveAnimations = activeAnimations;
 }
 
 bool Cube::_is_edge_hidden(Edge& edge) const {
 	for (const MoveAnimation& animation : moveAnimations) {
-		if (animation.hiddenEdges.find(&edge) != animation.hiddenEdges.end())
+		if (animation.hiddenEdges.contains(&edge))
 			return true;
 	}
 
@@ -76,7 +69,7 @@ bool Cube::_is_edge_hidden(Edge& edge) const {
 
 bool Cube::_is_corner_hidden(Corner& corner) const {
 	for (const MoveAnimation& animation : moveAnimations) {
-		if (animation.hiddenCorners.find(&corner) != animation.hiddenCorners.end())
+		if (animation.hiddenCorners.contains(&corner))
 			return true;
 	}
 
@@ -85,7 +78,7 @@ bool Cube::_is_corner_hidden(Corner& corner) const {
 
 bool Cube::_is_center_hidden(Center& center) const {
 	for (const MoveAnimation& animation : moveAnimations) {
-		if (animation.hiddenCenters.find(&center) != animation.hiddenCenters.end())
+		if (animation.hiddenCenters.contains(&center))
 			return true;
 	}
 

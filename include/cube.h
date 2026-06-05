@@ -9,27 +9,26 @@
 #include <set>
 #include <cstdint>
 #include <string>
-#include <cstddef>
 
 #include "raygui.h"
 #include "rlgl.h"
 #include "pieces.h"
 #include "standard_pieces.h"
 
+struct MoveAnimation {
+	Move move;
+	float elapsed = 0.0f;
+	float duration = 0.10f;
+	std::vector<Edge> edges;
+	std::vector<Corner> corners;
+	std::vector<Center> centers;
+	std::set<Edge*> hiddenEdges;
+	std::set<Corner*> hiddenCorners;
+	std::set<Center*> hiddenCenters;
+};
+
 class Cube {
 private:
-	struct MoveAnimation {
-		Move move;
-		float elapsed = 0.0f;
-		float duration = 0.15f;
-		std::vector<Edge> edges;
-		std::vector<Corner> corners;
-		std::vector<Center> centers;
-		std::set<Edge*> hiddenEdges;
-		std::set<Corner*> hiddenCorners;
-		std::set<Center*> hiddenCenters;
-	};
-
 	uint64_t lastSecond = 0.0f;
 	Vector3 rotations = {0.0f, 0.0f, 0.0f};
 	Camera3D camera;
