@@ -30,6 +30,8 @@ void Game::Render(){
 }
 
 bool Game::IsEnded(){
+	if(this->cube.IsEnded())
+		this->_save_scores();
 	return this->cube.IsEnded();
 }
 

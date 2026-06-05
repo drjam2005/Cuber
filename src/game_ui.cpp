@@ -45,12 +45,9 @@ void Game::_render_session(){
 			return;
 		}
 		if(!solveLists[currentListIndex].solves.empty()){
-			solveLists.push_back(
-					SolveList{
-						TextFormat("session%d", currentListIndex+1)
-					}
-				);
+			solveLists.push_back( SolveList{ });
 			currentListIndex = solveLists.size() - 1;
+			solveLists[currentListIndex].sessionName = TextFormat("session%i", currentListIndex+1);
 		}
 	}
 	DrawRectangle(
@@ -72,6 +69,43 @@ void Game::_render_session(){
 		y += 25;
 	}
 
+
+	switch(cubeState){
+		case IN_INSPECTION:
+			{
+				Vector2 textDims = MeasureTextEx(GetFontDefault(),
+												TextFormat("Inspection: %02.0f:%05.2f\n", getMinutes(inspectionTime),getSeconds(inspectionTime)),
+												20,
+												20.0f/10
+												);
+				DrawText(TextFormat("Inspection: %02.0f:%05.2f\n", getMinutes(inspectionTime),getSeconds(inspectionTime)),
+					this->windowDimensions.x - textDims.x - 10,
+					this->windowDimensions.y/2.0f - textDims.y - 10,
+					20,
+					BLACK
+				);
+				break;
+			}
+		case IN_SOLVE:
+			{
+				Vector2 textDims = MeasureTextEx(GetFontDefault(),
+												TextFormat("%02.0f:%05.2f\n", getMinutes(solveTime),getSeconds(solveTime)),
+												20,
+												20.0f/10
+												);
+				DrawText(TextFormat("%02.0f:%05.2f\n", getMinutes(solveTime),getSeconds(solveTime)),
+					this->windowDimensions.x - textDims.x - 10,
+					this->windowDimensions.y/2.0f - textDims.y - 10,
+					20,
+					BLACK
+				);
+				break;
+			}
+			break;
+		default:
+			break;
+
+	}
 }
 
 void Game::_handle_selected_score(){

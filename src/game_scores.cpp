@@ -1,5 +1,4 @@
 #include "game.h"
-#include <iostream>
 #include "raylib.h"
 
 #define MINI_CASE_SENSITIVE
@@ -17,7 +16,6 @@ void Game::_push_score(bool isSolved){
 		newSolve.type = DNF;
 
 	solveLists[currentListIndex].solves.push_back(newSolve);
-	std::cout << "pushing score!" << std::endl;
 	_save_scores();
 }
 

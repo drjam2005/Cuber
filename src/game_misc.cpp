@@ -1,7 +1,4 @@
 #include "game.h"
-
-#include <iostream>
-#include "helpers.h"
 #include "raylib.h"
 
 void Game::_handle_cube_state(){
@@ -38,5 +35,6 @@ void Game::_handle_cube_state(){
 		inspectionTime = 0.0f;
 		cubeState = IN_IDLE;
 	}
+
 	this->cube.Update();
 }
