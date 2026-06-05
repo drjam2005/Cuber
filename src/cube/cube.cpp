@@ -18,6 +18,7 @@ void Cube::Render() {
 void Cube::Update() {
 
 	_update_data();
+	_update_animations();
 	_handle_key_input();
 
 }

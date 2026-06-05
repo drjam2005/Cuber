@@ -4,6 +4,7 @@
 #include "pieces.h"
 #include "raylib.h"
 #include "raymath.h"
+#include <algorithm>
 
 void Cube::_update_data(){
 	cubeEdgeSides.clear();
@@ -79,6 +80,69 @@ void Cube::_apply_move(const Move& move) {
 	}
 }
 
+void Cube::_start_move_animation(const Move& move, const std::set<Edge*>& edges, const std::set<Corner*>& corners, const std::set<Center*>& centers) {
+	moveAnimations.erase(
+		std::remove_if(
+			moveAnimations.begin(),
+			moveAnimations.end(),
+			[&](const MoveAnimation& animation) {
+				for (Edge* edge : edges) {
+					if (animation.hiddenEdges.find(edge) != animation.hiddenEdges.end())
+						return true;
+				}
+
+				for (Corner* corner : corners) {
+					if (animation.hiddenCorners.find(corner) != animation.hiddenCorners.end())
+						return true;
+				}
+
+				for (Center* center : centers) {
+					if (animation.hiddenCenters.find(center) != animation.hiddenCenters.end())
+						return true;
+				}
+
+				return false;
+			}
+		),
+		moveAnimations.end()
+	);
+
+	MoveAnimation animation;
+	animation.move = move;
+	animation.hiddenEdges = edges;
+	animation.hiddenCorners = corners;
+	animation.hiddenCenters = centers;
+
+	for (Edge* edge : edges)
+		animation.edges.push_back(*edge);
+
+	for (Corner* corner : corners)
+		animation.corners.push_back(*corner);
+
+	for (Center* center : centers)
+		animation.centers.push_back(*center);
+
+	moveAnimations.push_back(animation);
+}
+
+void Cube::_update_animations() {
+	const float deltaTime = GetFrameTime();
+
+	for (MoveAnimation& animation : moveAnimations)
+		animation.elapsed += deltaTime;
+
+	moveAnimations.erase(
+		std::remove_if(
+			moveAnimations.begin(),
+			moveAnimations.end(),
+			[](const MoveAnimation& animation) {
+				return animation.elapsed >= animation.duration;
+			}
+		),
+		moveAnimations.end()
+	);
+}
+
 bool Cube::_handle_key_input() {
 	moves.clear();
 	isMoving = false;
@@ -90,6 +154,7 @@ bool Cube::_handle_key_input() {
 	}
 
 	if(IsKeyPressed(KEY_ESCAPE)){
+		moveAnimations.clear();
 		edgePieces = standardEdgePieces;
 		cornerPieces = standardCornerPieces;
 		centerPieces = standardCenterPieces;
@@ -99,6 +164,7 @@ bool Cube::_handle_key_input() {
 		if(!IsSolved())
 			return true;
 
+		moveAnimations.clear();
 		edgePieces = standardEdgePieces;
 		cornerPieces = standardCornerPieces;
 		centerPieces = standardCenterPieces;
@@ -228,6 +294,7 @@ bool Cube::_handle_key_input() {
 		usedCorners.insert(moveCorners.begin(), moveCorners.end());
 		usedCenters.insert(moveCenters.begin(), moveCenters.end());
 
+		_start_move_animation(move, moveEdges, moveCorners, moveCenters);
 		_apply_move(move);
 	}
 

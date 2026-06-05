@@ -9,6 +9,7 @@
 #include <set>
 #include <cstdint>
 #include <string>
+#include <cstddef>
 
 #include "raygui.h"
 #include "rlgl.h"
@@ -17,10 +18,23 @@
 
 class Cube {
 private:
+	struct MoveAnimation {
+		Move move;
+		float elapsed = 0.0f;
+		float duration = 0.15f;
+		std::vector<Edge> edges;
+		std::vector<Corner> corners;
+		std::vector<Center> centers;
+		std::set<Edge*> hiddenEdges;
+		std::set<Corner*> hiddenCorners;
+		std::set<Center*> hiddenCenters;
+	};
+
 	uint64_t lastSecond = 0.0f;
 	Vector3 rotations = {0.0f, 0.0f, 0.0f};
 	Camera3D camera;
 	std::vector<Move> moves;
+	std::vector<MoveAnimation> moveAnimations;
 	std::string scrambleText = "";
 	std::vector<Edge> edgePieces = standardEdgePieces;
 	std::vector<Corner> cornerPieces = standardCornerPieces;
@@ -46,11 +60,19 @@ private:
 	bool _handle_key_input();
 	void _update_data();
 	void _apply_move(const Move& move);
+	void _start_move_animation(const Move& move, const std::set<Edge*>& edges, const std::set<Corner*>& corners, const std::set<Center*>& centers);
+	void _update_animations();
+	bool _is_edge_hidden(Edge& edge) const;
+	bool _is_corner_hidden(Corner& corner) const;
+	bool _is_center_hidden(Center& center) const;
 
 	void _render_edge(Edge& edge);
 	void _render_corner(Corner& corner);
 
 	void _render_center(Center& center);
+	void _render_edge_animated(const Edge& edge, Vector3 axis, float angle);
+	void _render_corner_animated(const Corner& corner, Vector3 axis, float angle);
+	void _render_center_animated(const Center& center, Vector3 axis, float angle);
 
 	void _rotate_slice(Vector3 axis, float angle);
 	void _rotate_face(Vector3 face, float angle);
@@ -61,7 +83,7 @@ private:
 
 private:
 	void _collect_move_pieces(Move move, std::set<Edge*>& outEdges, std::set<Corner*>& outCorners, std::set<Center*>& outCenters);
-	void _draw_sticker(Vector3 position, Vector3 normal, Color clr);
+	void _draw_sticker(Vector3 position, Vector3 normal, Color clr, Vector3 tangent = {0.0f, 0.0f, 0.0f});
 };
 
 #endif // CUBE_H
