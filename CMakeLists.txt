@@ -10,6 +10,7 @@ set(src
 	src/game_ui.cpp
 	src/game_scores.cpp
 	src/cube/cube.cpp
+	src/cube/cube_animation.cpp
 	src/cube/cube_renderer.cpp
 	src/cube/cube_updater.cpp
 	src/cube/cube_misc.cpp

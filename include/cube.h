@@ -70,6 +70,7 @@ private:
 	void _render_corner(Corner& corner);
 
 	void _render_center(Center& center);
+	void _draw_rotated_sticker(Vector3 position, Vector3 normal, Color clr, Vector3 axis, float angleRadians);
 	void _render_edge_animated(const Edge& edge, Vector3 axis, float angle);
 	void _render_corner_animated(const Corner& corner, Vector3 axis, float angle);
 	void _render_center_animated(const Center& center, Vector3 axis, float angle);

@@ -63,84 +63,34 @@ void Cube::_render_center(Center& center){
 	_draw_sticker(center.position, center.normal, center.clr);
 }
 
+void Cube::_draw_rotated_sticker(Vector3 position, Vector3 normal, Color clr, Vector3 axis, float angleRadians) {
+	_draw_sticker(
+		Vector3RotateByAxisAngle(position, axis, angleRadians),
+		Vector3RotateByAxisAngle(normal, axis, angleRadians),
+		clr,
+		Vector3RotateByAxisAngle(GetStickerTangent(normal), axis, angleRadians)
+	);
+}
+
 void Cube::_render_edge_animated(const Edge& edge, Vector3 axis, float angle) {
 	float angleRadians = angle * DEG2RAD;
-	Vector3 rotatedPosition = Vector3RotateByAxisAngle(edge.position, axis, angleRadians);
 
-	_draw_sticker(
-		rotatedPosition,
-		Vector3RotateByAxisAngle(edge.normal1, axis, angleRadians),
-		edge.clrs.clr1,
-		Vector3RotateByAxisAngle(GetStickerTangent(edge.normal1), axis, angleRadians)
-	);
-	_draw_sticker(
-		rotatedPosition,
-		Vector3RotateByAxisAngle(edge.normal2, axis, angleRadians),
-		edge.clrs.clr2,
-		Vector3RotateByAxisAngle(GetStickerTangent(edge.normal2), axis, angleRadians)
-	);
+	_draw_rotated_sticker(edge.position, edge.normal1, edge.clrs.clr1, axis, angleRadians);
+	_draw_rotated_sticker(edge.position, edge.normal2, edge.clrs.clr2, axis, angleRadians);
 }
 
 void Cube::_render_corner_animated(const Corner& corner, Vector3 axis, float angle) {
 	float angleRadians = angle * DEG2RAD;
-	Vector3 rotatedPosition = Vector3RotateByAxisAngle(corner.position, axis, angleRadians);
 
-	_draw_sticker(
-		rotatedPosition,
-		Vector3RotateByAxisAngle(corner.normal1, axis, angleRadians),
-		corner.clrs.clr1,
-		Vector3RotateByAxisAngle(GetStickerTangent(corner.normal1), axis, angleRadians)
-	);
-	_draw_sticker(
-		rotatedPosition,
-		Vector3RotateByAxisAngle(corner.normal2, axis, angleRadians),
-		corner.clrs.clr2,
-		Vector3RotateByAxisAngle(GetStickerTangent(corner.normal2), axis, angleRadians)
-	);
-	_draw_sticker(
-		rotatedPosition,
-		Vector3RotateByAxisAngle(corner.normal3, axis, angleRadians),
-		corner.clrs.clr3,
-		Vector3RotateByAxisAngle(GetStickerTangent(corner.normal3), axis, angleRadians)
-	);
+	_draw_rotated_sticker(corner.position, corner.normal1, corner.clrs.clr1, axis, angleRadians);
+	_draw_rotated_sticker(corner.position, corner.normal2, corner.clrs.clr2, axis, angleRadians);
+	_draw_rotated_sticker(corner.position, corner.normal3, corner.clrs.clr3, axis, angleRadians);
 }
 
 void Cube::_render_center_animated(const Center& center, Vector3 axis, float angle) {
 	float angleRadians = angle * DEG2RAD;
 
-	_draw_sticker(
-		Vector3RotateByAxisAngle(center.position, axis, angleRadians),
-		Vector3RotateByAxisAngle(center.normal, axis, angleRadians),
-		center.clr,
-		Vector3RotateByAxisAngle(GetStickerTangent(center.normal), axis, angleRadians)
-	);
-}
-
-bool Cube::_is_edge_hidden(Edge& edge) const {
-	for (const MoveAnimation& animation : moveAnimations) {
-		if (animation.hiddenEdges.find(&edge) != animation.hiddenEdges.end())
-			return true;
-	}
-
-	return false;
-}
-
-bool Cube::_is_corner_hidden(Corner& corner) const {
-	for (const MoveAnimation& animation : moveAnimations) {
-		if (animation.hiddenCorners.find(&corner) != animation.hiddenCorners.end())
-			return true;
-	}
-
-	return false;
-}
-
-bool Cube::_is_center_hidden(Center& center) const {
-	for (const MoveAnimation& animation : moveAnimations) {
-		if (animation.hiddenCenters.find(&center) != animation.hiddenCenters.end())
-			return true;
-	}
-
-	return false;
+	_draw_rotated_sticker(center.position, center.normal, center.clr, axis, angleRadians);
 }
 
 
