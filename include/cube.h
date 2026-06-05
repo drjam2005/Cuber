@@ -8,6 +8,7 @@
 #include <vector>
 #include <set>
 #include <cstdint>
+#include <string>
 
 #include "raygui.h"
 #include "rlgl.h"
@@ -20,6 +21,7 @@ private:
 	Vector3 rotations = {0.0f, 0.0f, 0.0f};
 	Camera3D camera;
 	std::vector<Move> moves;
+	std::string scrambleText = "";
 	std::vector<Edge> edgePieces = standardEdgePieces;
 	std::vector<Corner> cornerPieces = standardCornerPieces;
 	std::vector<Center> centerPieces = standardCenterPieces;
@@ -28,14 +30,17 @@ private:
 	std::unordered_map<Vector3, std::set<Corner*>, Vector3Hash, Vector3Equal> cubeCornerSides;
 	std::unordered_map<Vector3, std::set<Center*>, Vector3Hash, Vector3Equal> cubeCenterSides;
 	bool closeRequested = false;
+	bool isMoving = false;
 public:
 	Cube();
 	void Render();
 	void Update();
+	bool IsMoving();
 	bool IsEnded();
 	bool IsSolved();
+	std::string GetScramble() const;
 private:
-	void _generate_scramble(int length=25);
+	std::string _generate_scramble(int length=25);
 	void _render_scene();
 
 	bool _handle_key_input();

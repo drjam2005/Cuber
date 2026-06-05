@@ -1,5 +1,5 @@
 #include "cube.h"
-#include "defines.h"
+#include "cube_defines.h"
 #include "helpers.h"
 
 bool Cube::IsSolved() {

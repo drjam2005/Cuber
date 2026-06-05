@@ -1,11 +1,10 @@
 #include "raylib.h"
-#include "cube.h"
+#include "game.h"
 
 
 int main() {
     const int screenWidth = 800;
     const int screenHeight = 600;
-
 
 	SetTraceLogLevel(LOG_NONE);
     InitWindow(screenWidth, screenHeight, "Cuber");
@@ -28,17 +27,18 @@ int main() {
 	Vector3 pos1 = {0.0f, 0.f, 0.0f};
 	Vector3 rotations = {0.0f, 0.0f, 0.0f};
 
-	Cube cube;
-    while (!WindowShouldClose() && !cube.IsEnded()) {
+	Game game;
+    while (!WindowShouldClose() && !game.IsEnded()) {
         BeginDrawing();
         ClearBackground(LIGHTGRAY);
 
-				cube.Update();
-				cube.Render();
+				game.Update();
+				game.Render();
 
 				DrawGrid(10, 1.0f);
 
-		DrawFPS(20, 20);
+			DrawText(TextFormat("FPS: %i", GetFPS()), 5, 5, 20, WHITE);
+
         EndDrawing();
     }
 

@@ -1,6 +1,6 @@
 #include "standard_pieces.h"
 
-#include "defines.h"
+#include "cube_defines.h"
 
 std::vector<Center> standardCenterPieces = {
     { { 0,  1,  0}, _TOP_FACE,    WHITE  }, // U

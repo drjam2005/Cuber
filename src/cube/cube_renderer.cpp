@@ -1,7 +1,7 @@
 #include "cube.h"
 #include "rlgl.h"
 #include "raymath.h"
-#include "defines.h"
+#include "cube_defines.h"
 
 void Cube::_render_scene(){
 	for(auto& edge : edgePieces){

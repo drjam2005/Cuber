@@ -19,4 +19,14 @@ Edge RotatedEdge(Edge e, Vector3 axis, float angle);
 Corner RotatedCorner(Corner c, Vector3 axis, float angle);
 Center RotatedCenter(Center c, Vector3 axis, float angle);
 
+float getMinutes(float elapsedTime);
+float getSeconds(float elapsedTime);
+
+// fetched from raylib examples lol
+void DrawTextBoxedSelectable(Font font, const char *text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint, int selectStart, int selectLength, Color selectTint, Color selectBackTint);
+void DrawTextBoxed(Font font, const char *text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint);
+
+// Draw text using font inside rectangle limits with support for text selection
+
+
 #endif // HELPERS_H

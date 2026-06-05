@@ -1,7 +1,5 @@
 #include "cube.h"
 
-#include <iostream>
-
 Cube::Cube() {
     camera = {0};
     camera.position = { 0.0f, 4.0f, 4.0f };
@@ -20,11 +18,18 @@ void Cube::Render() {
 void Cube::Update() {
 
 	_update_data();
-	if(_handle_key_input())
-		if(IsSolved()) std::cout << "Solved!" << '\n';
+	_handle_key_input();
 
+}
+
+bool Cube::IsMoving(){
+	return isMoving;
 }
 
 bool Cube::IsEnded() {
 	return closeRequested;
+}
+
+std::string Cube::GetScramble() const {
+	return scrambleText;
 }

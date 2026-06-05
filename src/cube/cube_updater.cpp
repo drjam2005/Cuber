@@ -1,6 +1,7 @@
 #include "cube.h"
-#include "defines.h"
+#include "cube_defines.h"
 #include "helpers.h"
+#include "pieces.h"
 #include "raylib.h"
 #include "raymath.h"
 
@@ -80,6 +81,7 @@ void Cube::_apply_move(const Move& move) {
 
 bool Cube::_handle_key_input() {
 	moves.clear();
+	isMoving = false;
 	if(IsKeyPressed(KEY_Q)){
 		if(IsKeyDown(KEY_LEFT_CONTROL)) {
 			closeRequested = true;
@@ -101,6 +103,7 @@ bool Cube::_handle_key_input() {
 		cornerPieces = standardCornerPieces;
 		centerPieces = standardCenterPieces;
 
+		_update_data();
 		_generate_scramble();
 
 		for (const Move& move : moves) {
@@ -181,6 +184,13 @@ bool Cube::_handle_key_input() {
 	if(moves.empty())
 		return false;
 
+	bool isJustWholes = true;
+	for(Move& move : moves){
+		if(move.moveType != WHOLE)
+			isJustWholes = false;
+	}
+
+
 	for (Move& move : moves) {
 		std::set<Edge*> moveEdges;
 		std::set<Corner*> moveCorners;
@@ -221,5 +231,9 @@ bool Cube::_handle_key_input() {
 		_apply_move(move);
 	}
 
+	if(isJustWholes)
+		return false;
+
+	isMoving = true;
 	return true;
 }
