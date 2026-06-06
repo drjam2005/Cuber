@@ -33,6 +33,10 @@ target_link_libraries(${exec} PUBLIC
 	mini
 )
 
+target_compile_options(${exec} PUBLIC
+	-O3
+)
+
 if(UNIX)
 	target_include_directories(${exec} PUBLIC
 		${CMAKE_SOURCE_DIR}/vendor/raylib/unix/include
@@ -45,7 +49,7 @@ if(UNIX)
 		X11
 	)
 elseif(WIN32)
-	target_include_directories(${exec} 
+	target_include_directories(${exec} PUBLIC
 		${CMAKE_SOURCE_DIR}/vendor/raylib/windows/include
 	)
 	target_link_directories(${exec} PUBLIC
@@ -55,5 +59,8 @@ elseif(WIN32)
 		raylib
 		gdi32
 		winmm
+	)
+	target_link_options(${exec} PUBLIC
+		-mwindows
 	)
 endif()

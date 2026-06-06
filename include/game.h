@@ -21,7 +21,7 @@ enum CUBE_STATE {
 
 struct Solve {
 	std::string scramble = "";
-	uint solveNumber = 0;
+	int solveNumber = 0;
 	SOLVE_TYPE type;
 
 	float inspectionTime = 0.0f;
