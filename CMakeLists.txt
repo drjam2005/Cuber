@@ -45,7 +45,7 @@ if(UNIX)
 		${CMAKE_SOURCE_DIR}/vendor/raylib/unix/lib
 	)
 	target_link_libraries(${exec} PUBLIC
-		raylib
+		libraylib.a
 		X11
 	)
 elseif(WIN32)
@@ -56,7 +56,7 @@ elseif(WIN32)
 		${CMAKE_SOURCE_DIR}/vendor/raylib/windows/lib
 	)
 	target_link_libraries(${exec} PUBLIC
-		raylib
+		libraylib.a
 		gdi32
 		winmm
 	)
